@@ -3,16 +3,16 @@
 import React, { useState } from "react";
 
 export const Chatbox2 = () => {
-  const [query, setQuery] = useState("");
-  const [response, setResponse] = useState("");
+  const [query, setQuery] = useState("hello");
+  const [response, setResponse] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const res = await fetch("/api/route", {
+      const res = await fetch("/api", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +23,8 @@ export const Chatbox2 = () => {
       if (res.ok) {
         const data = await res.json();
         console.log(data);
-        setResponse(data.choices[0].message.content); // Adjust based on the API response
+        setResponse(data.choices[0].message.content);
+        console.log(response);
       } else {
         console.error("Error:", res.statusText);
       }
