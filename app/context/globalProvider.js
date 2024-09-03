@@ -1,33 +1,52 @@
 "use client";
 
-import React from "react";
-import { OAICall } from "@/app/api/route";
+import React, { useEffect, useState } from "react";
 
 export const GlobalStateContext = React.createContext();
 export const GlobalStateProvider = ({ children }) => {
-  const [airesponse, setAiResponse] = React.useState("hello");
+  const [query, setQuery] = useState("hello");
+  const [response, setResponse] = useState("");
 
-  const getApiResponse = async () => {
+  const getOAIResponse = async () => {
     try {
-      const response = await fetch("/api/route", {
+      const res = await fetch("/api", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ query }),
       });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data);
+        setResponse(data.choices[0].message.content);
+      } else {
+        console.error("Error:", res.statusText);
       }
-      const data = await response.json();
-      console.log(data);
     } catch (error) {
-      console.error("API call failed:", error);
+      console.error("Error fetching data:", error);
     }
   };
 
+  const postToMongo = async () => {
+    try {
+      const res = await fetch("api/database", {
+        method: "POST",
+        body: JSON.stringify({ query, response }),
+      });
+    } catch (error) {}
+    console.log(res);
+  };
+
+  React.useEffect(() => {
+    postToMongo();
+  }, [response]);
+
   return (
-    <GlobalStateContext.Provider value={{ airesponse, getApiResponse }}>
+    <GlobalStateContext.Provider
+      value={{ query, setQuery, response, setResponse, getOAIResponse }}
+    >
       {children}
     </GlobalStateContext.Provider>
   );
