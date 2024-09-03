@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing response", status: 400 });
     }
     await client.connect();
-    console.log("success");
     const coll = client.db("ClusterFirstBoss").collection("RudeChatRsponses");
 
     const result = await coll.insertOne({

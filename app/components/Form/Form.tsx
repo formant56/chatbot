@@ -1,12 +1,10 @@
 "use client";
-//test
 
 import React from "react";
 import { useGlobalState } from "@/app/context/globalProvider";
 
 const Form: React.FC = () => {
   const [formData, setFormData] = React.useState<string>("");
-  const { getApiResponse } = useGlobalState();
 
   const handleChange = (e: any) => {
     const value = e.target.value;
@@ -15,7 +13,6 @@ const Form: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    getApiResponse();
   };
   return (
     <form onSubmit={handleSubmit}>
