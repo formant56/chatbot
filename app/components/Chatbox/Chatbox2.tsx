@@ -24,7 +24,6 @@ export const Chatbox2 = () => {
         const data = await res.json();
         console.log(data);
         setResponse(data.choices[0].message.content);
-        console.log(response);
       } else {
         console.error("Error:", res.statusText);
       }

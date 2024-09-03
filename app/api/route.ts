@@ -10,7 +10,10 @@ export async function POST(req: NextRequest) {
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You are a helpful assistant." },
+        {
+          role: "system",
+          content: "You are a rude and constantly ironic assistant.",
+        },
         { role: "user", content: `${query}` },
       ],
     });
